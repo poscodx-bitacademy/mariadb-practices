@@ -167,7 +167,24 @@ select c.dept_name, a.first_name, d.salary
 
 
 -- sol2) from절 subquery, join
- 
+select c.dept_name, a.first_name, d.salary
+  from employees a,
+	   dept_emp b,
+	   departments c,
+       salaries d,
+	   (  select a.dept_no, max(b.salary) as max_salary
+  	        from dept_emp a, salaries b
+		   where a.emp_no = b.emp_no
+             and a.to_date = '9999-01-01'
+             and b.to_date = '9999-01-01'
+        group by a.dept_no) e       
+ where a.emp_no = b.emp_no
+   and b.dept_no = c.dept_no
+   and a.emp_no = d.emp_no
+   and c.dept_no = e.dept_no
+   and b.to_date = '9999-01-01'
+   and d.to_date = '9999-01-01'
+   and d.salary = e.max_salary;
 
 
    
